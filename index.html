@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>鲜果乐园 — 新鲜水果产地直供</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🍓</text></svg>" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 顶部公告条 -->
+  <div class="promo-bar">🚚 满 ¥39 免运费 · 🧊 全程冷链配送 · 🍊 坏果包赔</div>
+
+  <!-- 顶部导航 -->
+  <header class="header">
+    <div class="container header-inner">
+      <a class="logo" href="#top">🍓<span>鲜果乐园</span></a>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input id="searchInput" type="text" placeholder="搜索水果，如：草莓、苹果…" />
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" id="ordersBtn">🧾<span class="hide-sm">我的订单</span></button>
+        <button class="cart-btn" id="cartBtn" aria-label="打开购物车">🛒<span class="cart-badge" id="cartBadge">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 首屏横幅 -->
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <h1>新鲜好果<br />产地直送到家</h1>
+        <p>每一颗水果都来自核心产区，清晨采摘、冷链直发，<br />从枝头到舌尖不超过 48 小时。</p>
+        <div class="hero-points">
+          <span>🚚 48小时直达</span>
+          <span>🧊 冷链锁鲜</span>
+          <span>👍 坏果包赔</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#shop" class="btn btn-primary">立即选购 🍑</a>
+          <span class="hero-tip">满 ¥39 免运费</span>
+        </div>
+      </div>
+      <div class="hero-emojis" aria-hidden="true">
+        <span class="float-emoji e1">🍊</span>
+        <span class="float-emoji e2">🍇</span>
+        <span class="float-emoji e3">🍓</span>
+        <span class="float-emoji e4">🥝</span>
+        <span class="float-emoji e5">🍉</span>
+        <span class="float-emoji e6">🥭</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 商品区 -->
+  <main class="container" id="shop">
+    <div class="toolbar">
+      <div class="chips" id="categoryChips"><!-- 分类由 JS 渲染 --></div>
+      <select id="sortSelect" class="sort-select">
+        <option value="default">综合排序</option>
+        <option value="sales">按销量</option>
+        <option value="priceAsc">价格从低到高</option>
+        <option value="priceDesc">价格从高到低</option>
+      </select>
+    </div>
+    <div id="productGrid" class="grid"></div>
+    <div id="emptyState" class="empty-state hidden">🍃<p>没有找到相关水果，换个关键词试试吧</p></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">🍓 鲜果乐园</div>
+      <p>产地直供 · 冷链配送 · 坏果包赔</p>
+      <p class="copyright">© 2026 鲜果乐园 xianguo.demo · 本站为演示项目，下单与支付均为模拟</p>
+    </div>
+  </footer>
+
+  <!-- 商品详情弹窗 -->
+  <div class="modal" id="productModal">
+    <div class="modal-card" id="productModalCard"></div>
+  </div>
+
+  <!-- 结算弹窗 -->
+  <div class="modal" id="checkoutModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>确认订单</h3>
+        <button class="close-btn" data-action="close-checkout">✕</button>
+      </div>
+      <div class="checkout-items" id="checkoutItems"></div>
+      <form id="checkoutForm" novalidate>
+        <div class="form-grid">
+          <label>收货人<input name="receiver" placeholder="收货人姓名" maxlength="20" /></label>
+          <label>手机号<input name="phone" placeholder="11 位手机号" maxlength="11" inputmode="numeric" /></label>
+        </div>
+        <label>收货地址<input name="address" placeholder="例：幸福小区 3 号楼 2 单元 201" maxlength="60" /></label>
+        <div class="form-grid">
+          <label>送达时间
+            <select name="slot">
+              <option>尽快送达（约 30 分钟）</option>
+              <option>今天 18:00 - 20:00</option>
+              <option>明天 09:00 - 11:00</option>
+              <option>明天 14:00 - 18:00</option>
+            </select>
+          </label>
+          <label>支付方式
+            <select name="pay">
+              <option>在线支付（演示）</option>
+              <option>货到付款（演示）</option>
+            </select>
+          </label>
+        </div>
+        <label>订单备注<input name="note" placeholder="选果偏好、放置位置等（选填）" maxlength="50" /></label>
+        <div class="checkout-totals" id="checkoutTotals"></div>
+        <button type="submit" class="btn btn-primary btn-block">提交订单</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 下单成功弹窗 -->
+  <div class="modal" id="successModal">
+    <div class="modal-card">
+      <div class="success-body">
+        <div class="success-emoji">🎉</div>
+        <h3>下单成功！</h3>
+        <p class="success-sub">新鲜水果正在为您打包，稍后按约定时间配送</p>
+        <div class="success-card" id="successInfo"></div>
+        <div class="success-actions">
+          <button class="btn btn-ghost" data-action="close-success">继续购物</button>
+          <button class="btn btn-primary" data-action="view-orders">查看订单</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 我的订单弹窗 -->
+  <div class="modal" id="ordersModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>🧾 我的订单</h3>
+        <button class="close-btn" data-action="close-orders">✕</button>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+  </div>
+
+  <!-- 购物车抽屉 -->
+  <aside class="drawer" id="cartDrawer">
+    <div class="drawer-head">
+      <h3>🛒 购物车</h3>
+      <button class="close-btn" data-action="close-drawer">✕</button>
+    </div>
+    <div class="free-ship" id="freeShipBar"></div>
+    <div class="drawer-body" id="cartItems"></div>
+    <div class="drawer-foot">
+      <div class="drawer-total"><span>合计</span><strong id="cartSubtotal">¥0.00</strong></div>
+      <button class="btn btn-primary btn-block" data-action="open-checkout">去结算</button>
+      <p class="drawer-note">运费在结算页计算，满 ¥39 免运费</p>
+    </div>
+  </aside>
+
+  <!-- 遮罩与提示 -->
+  <div class="mask" id="mask"></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
